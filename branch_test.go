@@ -45,27 +45,27 @@ func TestCase(t *testing.T) {
 	}{
 		{
 			when:  Case(When(Eq("col", 1), 1)),
-			query: "case (when (`col` = ?) then ?)",
+			query: "(case when (`col` = ?) then ? end)",
 			value: []interface{}{1, 1},
 		},
 		{
 			when:  Case(When(Eq("col", 1), 2), Expr("?", 3)),
-			query: "case (when (`col` = ?) then ? else ?)",
+			query: "(case when (`col` = ?) then ? else ? end)",
 			value: []interface{}{1, 2, 3},
 		},
 		{
 			when:  Case(When(Eq("a", 1), 2), Gt("b", 3)),
-			query: "case (when (`a` = ?) then ? else `b` > ?)",
+			query: "(case when (`a` = ?) then ? else `b` > ? end)",
 			value: []interface{}{1, 2, 3},
 		},
 		{
 			when:  Case(When(Eq("col", "a"), 1), When(Eq("col", "b"), 2), Expr("?", 3)),
-			query: "case (when (`col` = ?) then ? when (`col` = ?) then ? else ?)",
+			query: "(case when (`col` = ?) then ? when (`col` = ?) then ? else ? end)",
 			value: []interface{}{"a", 1, "b", 2, 3},
 		},
 		{
 			when:  Case(When(Eq("colA", "a"), Lt("colB", 5)), When(Eq("colA", "b"), Lt("colB", 10)), Lt("colB", 15)),
-			query: "case (when (`colA` = ?) then `colB` < ? when (`colA` = ?) then `colB` < ? else `colB` < ?)",
+			query: "(case when (`colA` = ?) then `colB` < ? when (`colA` = ?) then `colB` < ? else `colB` < ? end)",
 			value: []interface{}{"a", 5, "b", 10, 15},
 		},
 	} {

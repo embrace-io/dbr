@@ -30,7 +30,7 @@ func When(cond Builder, value interface{}) Builder {
 // If there are more than 1 conditions, the last one will be an else statement.
 func Case(conds ...Builder) Builder {
 	return BuildFunc(func(d Dialect, buf Buffer) error {
-		buf.WriteString("case (")
+		buf.WriteString("(case ")
 		l := len(conds)
 		for i, cond := range conds {
 			if l > 1 && i == l-1 {
@@ -41,7 +41,7 @@ func Case(conds ...Builder) Builder {
 				buf.WriteString(" ")
 			}
 		}
-		buf.WriteString(")")
+		buf.WriteString(" end)")
 		return nil
 	})
 }

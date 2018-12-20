@@ -9,28 +9,28 @@ import (
 
 func TestWhen(t *testing.T) {
 	for _, test := range []struct {
-		when  Builder
+		WHEN  Builder
 		query string
 		value []interface{}
 	}{
 		{
-			when:  When(Eq("col", 1), 1),
-			query: "when (`col` = ?) then ?",
+			WHEN:  When(Eq("col", 1), 1),
+			query: "WHEN (`col` = ?) THEN ?",
 			value: []interface{}{1, 1},
 		},
 		{
-			when:  When(And(Gt("a", 1), Lt("b", 2)), "c"),
-			query: "when ((`a` > ?) AND (`b` < ?)) then ?",
+			WHEN:  When(And(Gt("a", 1), Lt("b", 2)), "c"),
+			query: "WHEN ((`a` > ?) AND (`b` < ?)) THEN ?",
 			value: []interface{}{1, 2, "c"},
 		},
 		{
-			when:  When(Eq("a", 1), Gt("b", 2)),
-			query: "when (`a` = ?) then `b` > ?",
+			WHEN:  When(Eq("a", 1), Gt("b", 2)),
+			query: "WHEN (`a` = ?) THEN `b` > ?",
 			value: []interface{}{1, 2},
 		},
 	} {
 		buf := NewBuffer()
-		err := test.when.Build(dialect.Clickhouse, buf)
+		err := test.WHEN.Build(dialect.Clickhouse, buf)
 		require.NoError(t, err)
 		require.Equal(t, test.query, buf.String())
 		require.Equal(t, test.value, buf.Value())
@@ -39,38 +39,38 @@ func TestWhen(t *testing.T) {
 
 func TestCase(t *testing.T) {
 	for _, test := range []struct {
-		when  Builder
+		WHEN  Builder
 		query string
 		value []interface{}
 	}{
 		{
-			when:  Case(When(Eq("col", 1), 1)),
-			query: "(case when (`col` = ?) then ? end)",
+			WHEN:  Case(When(Eq("col", 1), 1)),
+			query: "(CASE WHEN (`col` = ?) THEN ? END)",
 			value: []interface{}{1, 1},
 		},
 		{
-			when:  Case(When(Eq("col", 1), 2), Expr("?", 3)),
-			query: "(case when (`col` = ?) then ? else ? end)",
+			WHEN:  Case(When(Eq("col", 1), 2), Else(3)),
+			query: "(CASE WHEN (`col` = ?) THEN ? ELSE ? END)",
 			value: []interface{}{1, 2, 3},
 		},
 		{
-			when:  Case(When(Eq("a", 1), 2), Gt("b", 3)),
-			query: "(case when (`a` = ?) then ? else `b` > ? end)",
+			WHEN:  Case(When(Eq("a", 1), 2), Else(Gt("b", 3))),
+			query: "(CASE WHEN (`a` = ?) THEN ? ELSE `b` > ? END)",
 			value: []interface{}{1, 2, 3},
 		},
 		{
-			when:  Case(When(Eq("col", "a"), 1), When(Eq("col", "b"), 2), Expr("?", 3)),
-			query: "(case when (`col` = ?) then ? when (`col` = ?) then ? else ? end)",
+			WHEN:  Case(When(Eq("col", "a"), 1), When(Eq("col", "b"), 2), Else(3)),
+			query: "(CASE WHEN (`col` = ?) THEN ? WHEN (`col` = ?) THEN ? ELSE ? END)",
 			value: []interface{}{"a", 1, "b", 2, 3},
 		},
 		{
-			when:  Case(When(Eq("colA", "a"), Lt("colB", 5)), When(Eq("colA", "b"), Lt("colB", 10)), Lt("colB", 15)),
-			query: "(case when (`colA` = ?) then `colB` < ? when (`colA` = ?) then `colB` < ? else `colB` < ? end)",
+			WHEN:  Case(When(Eq("colA", "a"), Lt("colB", 5)), When(Eq("colA", "b"), Lt("colB", 10)), Else(Lt("colB", 15))),
+			query: "(CASE WHEN (`colA` = ?) THEN `colB` < ? WHEN (`colA` = ?) THEN `colB` < ? ELSE `colB` < ? END)",
 			value: []interface{}{"a", 5, "b", 10, 15},
 		},
 	} {
 		buf := NewBuffer()
-		err := test.when.Build(dialect.Clickhouse, buf)
+		err := test.WHEN.Build(dialect.Clickhouse, buf)
 		require.NoError(t, err)
 		require.Equal(t, test.query, buf.String())
 		require.Equal(t, test.value, buf.Value())

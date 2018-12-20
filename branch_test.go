@@ -44,12 +44,12 @@ func TestCase(t *testing.T) {
 		value []interface{}
 	}{
 		{
-			when:  Case(When(Eq("col", 1), 1)),
+			when:  Case(When(Eq("col", 1), Expr("?", 1))),
 			query: "case (when (`col` = ?) then ?)",
 			value: []interface{}{1, 1},
 		},
 		{
-			when:  Case(When(Eq("col", 1), 2), 3),
+			when:  Case(When(Eq("col", 1), 2), Expr("?", 3)),
 			query: "case (when (`col` = ?) then ? else ?)",
 			value: []interface{}{1, 2, 3},
 		},
@@ -59,7 +59,7 @@ func TestCase(t *testing.T) {
 			value: []interface{}{1, 2, 3},
 		},
 		{
-			when:  Case(When(Eq("col", "a"), 1), When(Eq("col", "b"), 2), 3),
+			when:  Case(When(Eq("col", "a"), 1), When(Eq("col", "b"), 2), Expr("?", 3)),
 			query: "case (when (`col` = ?) then ? when (`col` = ?) then ? else ?)",
 			value: []interface{}{"a", 1, "b", 2, 3},
 		},

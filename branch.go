@@ -1,5 +1,7 @@
 package dbr
 
+// When creates a WHEN statement given a condition and a value that's evaluated
+// when the condition is true.
 func When(cond Builder, value interface{}) Builder {
 	return BuildFunc(func(d Dialect, buf Buffer) error {
 		buf.WriteString("when (")
@@ -24,21 +26,17 @@ func When(cond Builder, value interface{}) Builder {
 	})
 }
 
-func Case(values ...interface{}) Builder {
+// Case creates a CASE statement from a list of conditions.
+// If there are more than 1 conditions, the last one will be an else statement.
+func Case(conds ...Builder) Builder {
 	return BuildFunc(func(d Dialect, buf Buffer) error {
 		buf.WriteString("case (")
-		l := len(values)
-		for i, value := range values {
+		l := len(conds)
+		for i, cond := range conds {
 			if l > 1 && i == l-1 {
 				buf.WriteString("else ")
 			}
-			switch v := value.(type) {
-			case Builder:
-				v.Build(d, buf)
-			default:
-				buf.WriteString(placeholder)
-				buf.WriteValue(v)
-			}
+			cond.Build(d, buf)
 			if i < l-1 {
 				buf.WriteString(" ")
 			}

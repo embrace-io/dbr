@@ -44,7 +44,7 @@ func TestCase(t *testing.T) {
 		value []interface{}
 	}{
 		{
-			when:  Case(When(Eq("col", 1), Expr("?", 1))),
+			when:  Case(When(Eq("col", 1), 1)),
 			query: "case (when (`col` = ?) then ?)",
 			value: []interface{}{1, 1},
 		},

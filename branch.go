@@ -1,7 +1,7 @@
 package dbr
 
 // When creates a WHEN statement given a condition and a value that's evaluated
-// when the condition is true.
+// if the condition is true.
 func When(cond Builder, value interface{}) Builder {
 	return BuildFunc(func(d Dialect, buf Buffer) error {
 		buf.WriteString("when (")

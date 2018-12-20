@@ -69,14 +69,13 @@ func Case(conds ...Builder) CaseBuilder {
 }
 
 // AS adds an alias to the CASE statement.
-func (cb CaseBuildFunc) As(name string) Builder {
+func (cb CaseBuildFunc) As(alias string) Builder {
 	return BuildFunc(func(d Dialect, buf Buffer) error {
 		if err := cb(d, buf); err != nil {
 			return err
 		}
 		buf.WriteString(" AS ")
-		buf.WriteString(placeholder)
-		buf.WriteValue(name)
+		buf.WriteString(d.QuoteIdent(alias))
 		return nil
 	})
 }

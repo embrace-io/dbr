@@ -50,8 +50,8 @@ func TestCase(t *testing.T) {
 		},
 		{
 			caseBuilder: Case(When(Eq("col", 1), 1)).As("a"),
-			query:       "CASE WHEN (`col` = ?) THEN ? END AS ?",
-			value:       []interface{}{1, 1, "a"},
+			query:       "CASE WHEN (`col` = ?) THEN ? END AS `a`",
+			value:       []interface{}{1, 1},
 		},
 		{
 			caseBuilder: Case(When(Eq("col", 1), 2), Else(3)),
@@ -75,8 +75,8 @@ func TestCase(t *testing.T) {
 		},
 		{
 			caseBuilder: Case(When(Eq("colA", "a"), Lt("colB", 5)), When(Eq("colA", "b"), Lt("colB", 10)), Else(Lt("colB", 15))).As("c"),
-			query:       "CASE WHEN (`colA` = ?) THEN `colB` < ? WHEN (`colA` = ?) THEN `colB` < ? ELSE `colB` < ? END AS ?",
-			value:       []interface{}{"a", 5, "b", 10, 15, "c"},
+			query:       "CASE WHEN (`colA` = ?) THEN `colB` < ? WHEN (`colA` = ?) THEN `colB` < ? ELSE `colB` < ? END AS `c`",
+			value:       []interface{}{"a", 5, "b", 10, 15},
 		},
 	} {
 		buf := NewBuffer()

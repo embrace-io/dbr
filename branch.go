@@ -42,17 +42,17 @@ func Else(value interface{}) Builder {
 	})
 }
 
-// Case creates a CASE statement from a list of conditions.
-// If there are more than 1 conditions, the last one will be an else statement.
-
+// Builder interface that includes AS for asliasing CASE statements.
 type CaseBuilder interface {
 	Builder
 	As(name string) Builder
 }
 
-// CaseBuildFunc
+// CaseBuildFunc implements Builder.
 type CaseBuildFunc func(Dialect, Buffer) error
 
+// Case creates a CASE statement from a list of conditions.
+// If there are more than 1 conditions, the last one will be an else statement.
 func Case(conds ...Builder) CaseBuilder {
 	return CaseBuildFunc(func(d Dialect, buf Buffer) error {
 		buf.WriteString("CASE ")
@@ -68,6 +68,7 @@ func Case(conds ...Builder) CaseBuilder {
 	})
 }
 
+// AS adds an alias to the CASE statement.
 func (cb CaseBuildFunc) As(name string) Builder {
 	return BuildFunc(func(d Dialect, buf Buffer) error {
 		if err := cb(d, buf); err != nil {
@@ -80,6 +81,7 @@ func (cb CaseBuildFunc) As(name string) Builder {
 	})
 }
 
+// Build calls itself to build SQL.
 func (cb CaseBuildFunc) Build(d Dialect, buf Buffer) error {
 	return cb(d, buf)
 }

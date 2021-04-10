@@ -20,15 +20,14 @@ func (qs QuerySettings) Append(setting, value string) QuerySettings {
 	return qs
 }
 
-// Build writes each setting in the form of "SETTINGS setting_key=value \n"
+// Build writes each setting in the form of "SETTINGS setting_key=value[,setting_key=value] \n"
 func (qs QuerySettings) Build(d Dialect, buf Buffer) error {
 	if d != dialect.Clickhouse {
 		return ErrUnsupportedDialectForSettings
 	}
-	for _, setting := range qs {
-		if _, err := buf.WriteString("\nSETTINGS " + setting); err != nil {
-			return err
-		}
+	if len(qs) == 0 {
+		return nil
 	}
-	return nil
+	_, err := buf.WriteString("\nSETTINGS " + strings.Join(qs, ", "))
+	return err
 }

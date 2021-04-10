@@ -49,7 +49,7 @@ func TestSelectStmtWithSettings(t *testing.T) {
 
 	err = outer.Build(dialect.Clickhouse, buf)
 	require.NoError(t, err)
-	require.Equal(t, "SELECT a, b FROM ?\nSETTINGS setting_key1 = 1\nSETTINGS setting_key2 = noop", buf.String())
+	require.Equal(t, "SELECT a, b FROM ?\nSETTINGS setting_key1 = 1, setting_key2 = noop", buf.String())
 	// two functions cannot be compared
 	require.Equal(t, 1, len(buf.Value()))
 }

@@ -22,7 +22,7 @@ func TestQuerySettings(t *testing.T) {
 		{
 			name:     "test multiple setting",
 			settings: QuerySettings.Append(nil, "key1", "value1").Append("key2", "value2"),
-			expect:   "\nSETTINGS key1 = value1\nSETTINGS key2 = value2",
+			expect:   "\nSETTINGS key1 = value1, key2 = value2",
 		},
 		{
 			name:     "test trimming setting args",

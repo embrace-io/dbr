@@ -22,7 +22,7 @@ func Open(driver, dsn string, log EventReceiver) (*Connection, error) {
 	}
 	var d Dialect
 	switch driver {
-	case "clickhouse":
+	case "clickhouse", "chhttp":
 		d = dialect.Clickhouse
 	case "mysql":
 		d = dialect.MySQL

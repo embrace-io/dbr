@@ -20,10 +20,11 @@ import (
 //
 
 var (
-	mysqlDSN    = os.Getenv("DBR_TEST_MYSQL_DSN")
-	postgresDSN = os.Getenv("DBR_TEST_POSTGRES_DSN")
-	sqlite3DSN  = ":memory:"
-	mssqlDSN    = os.Getenv("DBR_TEST_MSSQL_DSN")
+	mysqlDSN      = os.Getenv("DBR_TEST_MYSQL_DSN")
+	postgresDSN   = os.Getenv("DBR_TEST_POSTGRES_DSN")
+	sqlite3DSN    = ":memory:"
+	mssqlDSN      = os.Getenv("DBR_TEST_MSSQL_DSN")
+	clickhouseDSN = os.Getenv("DBR_TEST_CLICKHOUSE_DSN")
 )
 
 func createSession(driver, dsn string) *Session {
@@ -40,9 +41,10 @@ var (
 	postgresBinarySession = createSession("postgres", postgresDSN+"&binary_parameters=yes")
 	sqlite3Session        = createSession("sqlite3", sqlite3DSN)
 	mssqlSession          = createSession("mssql", mssqlDSN)
+	clickhouseSession     = createSession("clickhouse", clickhouseDSN)
 
 	// all test sessions should be here
-	testSession = []*Session{mysqlSession, postgresSession, sqlite3Session, mssqlSession}
+	testSession = []*Session{mysqlSession, postgresSession, sqlite3Session, mssqlSession, clickhouseSession}
 )
 
 type dbrPerson struct {

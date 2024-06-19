@@ -5,12 +5,10 @@ import (
 	"testing"
 
 	"github.com/embrace-io/dbr/v2/dialect"
-
 	"github.com/stretchr/testify/require"
 )
 
 func TestComments(t *testing.T) {
-	dialects := []Dialect{dialect.MySQL, dialect.PostgreSQL, dialect.SQLite3, dialect.Clickhouse}
 	for _, test := range []struct {
 		name     string
 		comments Comments
@@ -42,6 +40,8 @@ func TestComments(t *testing.T) {
 				name = "PostgreSQL"
 			case dialect.SQLite3:
 				name = "SQLite3"
+			case dialect.Clickhouse:
+				name = "ClickHouse"
 			}
 			t.Run(fmt.Sprintf("%s/%s", name, test.name), func(t *testing.T) {
 				buf := NewBuffer()

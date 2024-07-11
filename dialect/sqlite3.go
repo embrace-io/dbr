@@ -46,3 +46,7 @@ func (d sqlite3) OnConflict(_ string) string {
 func (d sqlite3) Proposed(_ string) string {
 	return ""
 }
+
+func (d sqlite3) UpdateStmts() (string, string) {
+	return "UPDATE", "SET"
+}

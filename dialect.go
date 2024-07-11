@@ -16,4 +16,5 @@ type Dialect interface {
 
 	OnConflict(constraint string) string
 	Proposed(column string) string
+	UpdateStmts() (string, string)
 }

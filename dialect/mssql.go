@@ -42,3 +42,7 @@ func (d mssql) OnConflict(_ string) string {
 func (d mssql) Proposed(_ string) string {
 	return ""
 }
+
+func (d mssql) UpdateStmts() (string, string) {
+	return "UPDATE", "SET"
+}

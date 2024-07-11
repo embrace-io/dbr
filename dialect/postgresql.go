@@ -43,3 +43,7 @@ func (d postgreSQL) OnConflict(constraint string) string {
 func (d postgreSQL) Proposed(column string) string {
 	return fmt.Sprintf("EXCLUDED.%s", d.QuoteIdent(column))
 }
+
+func (d postgreSQL) UpdateStmts() (string, string) {
+	return "UPDATE", "SET"
+}

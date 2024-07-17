@@ -47,3 +47,7 @@ func (d postgreSQL) Proposed(column string) string {
 func (d postgreSQL) UpdateStmts() (string, string) {
 	return "UPDATE", "SET"
 }
+
+func (d postgreSQL) SupportsOn() bool {
+	return true
+}

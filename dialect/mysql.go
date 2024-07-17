@@ -76,3 +76,7 @@ func (d mysql) Proposed(column string) string {
 func (d mysql) UpdateStmts() (string, string) {
 	return "UPDATE", "SET"
 }
+
+func (d mysql) SupportsOn() bool {
+	return true
+}

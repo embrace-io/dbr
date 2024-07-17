@@ -50,3 +50,7 @@ func (d sqlite3) Proposed(_ string) string {
 func (d sqlite3) UpdateStmts() (string, string) {
 	return "UPDATE", "SET"
 }
+
+func (d sqlite3) SupportsOn() bool {
+	return true
+}

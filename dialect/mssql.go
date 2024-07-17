@@ -46,3 +46,7 @@ func (d mssql) Proposed(_ string) string {
 func (d mssql) UpdateStmts() (string, string) {
 	return "UPDATE", "SET"
 }
+
+func (d mssql) SupportsOn() bool {
+	return true
+}

@@ -1,3 +1,19 @@
+# This is a fork from [gocraft/dbr](github.com/gocraft/dbr)
+
+---
+
+## Additional Features in This Fork
+
+This fork introduces two key features:
+
+1. **Support for `ON CONFLICT` in `InsertStmt**
+   Allows you to handle unique constraint violations gracefully during insert operations, enhancing compatibility with PostgreSQL and other databases that support this feature.
+
+2. **Support for ClickHouse Driver**
+   Enables seamless integration with the ClickHouse database.
+
+---
+
 # gocraft/dbr (database records)
 
 [![GoDoc](https://godoc.org/github.com/gocraft/dbr?status.png)](https://godoc.org/github.com/gocraft/dbr)
